@@ -1,0 +1,79 @@
+Program
+= OptSP expr:Expression OptSP {return expr }
+
+Expression
+= GroupExpr / FuncCall / Number / Binding
+
+// Grouping
+
+GroupExpr
+= OpenParen expr:Expression CloseParen {
+    return expr
+}
+
+
+OpenParen
+= [(]
+
+CloseParen
+= [)]
+
+// Function Calls
+FuncCall
+= b:Binding SP head:Expression tail:FuncArg* {
+    return ["FuncCall",b,head].concat(tail)
+}
+
+FuncArg
+= OptSP [,] OptSP val:Expression { return val }
+
+
+// Binding Names
+
+Binding
+= head:BindLeadingChar tail:BindSubsequentChar* {
+    return ["Binding", head + tail.join('')]
+}
+
+BindSubsequentChar
+= BindLeadingChar / Digit
+
+BindLeadingChar
+= Letter / FreeSpecialChar
+
+FreeSpecialChar
+= [~!@#$%^&*?/+=-_<>]
+
+Letter
+= [a-zA-Z]
+
+// Numbers
+
+Number
+= number:(NegativeNumber / PositiveNumber) {
+    return ["Number",parseFloat(number)]
+}
+
+NegativeNumber
+= [-] a:PositiveNumber { return "-" + a }
+
+PositiveNumber
+= Decimal / LooseDecimal / Integer
+
+Decimal
+= a:Integer [.] b:Integer { return a + "." + b }
+
+LooseDecimal
+= [.] a:Integer { return "0." + a }
+
+Integer
+= d:Digit+ { return d.join("")}
+
+Digit
+= [0-9]
+
+SP
+= [ ]+
+
+OptSP
+= [ ]*

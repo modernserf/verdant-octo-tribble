@@ -1,0 +1,24 @@
+{
+  "name": "blub",
+  "version": "1.0.0",
+  "description": "yet another compile-to-JS language",
+  "main": "index.js",
+  "scripts": {
+    "lint": "node node_modules/eslint/bin/eslint.js src/ --ext .js",
+    "tape": "node_modules/.bin/babel-tape-runner src/**/*-test.js | node_modules/.bin/faucet",
+    "tape-runner": "npm run tape || tput bel",
+    "test": "npm run lint && npm run tape",
+    "test-watch": "fswatch -0 src/ | xargs -0 -n1 -I{} npm run tape-runner"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.3",
+    "babel-tape-runner": "^1.2.0",
+    "eslint": "^1.6.0",
+    "faucet": "0.0.1",
+    "pegjs": "^0.9.0",
+    "tape": "^4.2.1"
+  }
+}
