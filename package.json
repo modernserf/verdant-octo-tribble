@@ -8,21 +8,24 @@
     "url": "git@github.com:modernserf/verdant-octo-tribble.git"
   },
   "scripts": {
-    "lint": "node node_modules/eslint/bin/eslint.js src/ --ext .js",
-    "tape": "node_modules/.bin/babel-tape-runner src/**/*-test.js | node_modules/.bin/faucet",
+    "lint": "eslint src/",
+    "tape": "tape src/**/*-test.js | node_modules/.bin/faucet",
     "tape-runner": "npm run tape || tput bel",
     "test": "npm run lint && npm run tape",
-    "test-watch": "fswatch -0 src/ | xargs -0 -n1 -I{} npm run tape-runner"
+    "test-watch": "onchange 'src/index.peg' 'src/index-test.js' -- npm run tape-runner"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "babel": "^5.8.23",
-    "babel-eslint": "^4.1.3",
-    "babel-tape-runner": "^1.2.0",
-    "eslint": "^1.6.0",
+    "pegjs": "^0.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.9.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-standard": "^2.0.1",
     "faucet": "0.0.1",
-    "pegjs": "^0.9.0",
-    "tape": "^4.2.1"
+    "onchange": "^3.0.2",
+    "tape": "^4.6.2"
   }
 }
